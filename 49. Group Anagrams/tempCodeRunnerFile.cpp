@@ -1,0 +1,1 @@
+temp += (static_cast<float>(strs[i][j]) * static_cast<float>(strs[i][j]) + 42);

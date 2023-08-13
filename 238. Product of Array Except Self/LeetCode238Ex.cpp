@@ -10,20 +10,68 @@ using namespace std;
 
 class Solution {
 public:
-    vector<int> productExceptSelf(vector<int>& nums) {
-        int n = nums.size();
-        vector<int> result(n, 1);
+    // vector<int> productExceptSelf(vector<int>& nums) {   簡化寫法
+    //     int n = nums.size();
+    //     vector<int> result(n, 1);
         
-        int prefix = 1;
+    //     int prefix = 1;
+    //     for (int i = 0; i < n; i++) {
+    //         result[i] = prefix;
+    //         prefix = prefix * nums[i];
+    //     }
+        
+    //     int postfix = 1;
+    //     for (int i = n - 1; i >= 0; i--) {
+    //         result[i] = result[i] * postfix;
+    //         postfix = postfix * nums[i];
+    //     }
+        
+    //     return result;
+    // }
+
+    vector<int> prefixProduct(const vector<int>& nums) { //拆分寫法
+        int n = nums.size();
+        vector<int> prefix(n, 1);
+        
+        int product = 1;
         for (int i = 0; i < n; i++) {
-            result[i] = prefix;
-            prefix = prefix * nums[i];
+            prefix[i] = product;
+            product *= nums[i];
         }
         
-        int postfix = 1;
+        for(int num : prefix)
+            cout << num << " ";
+        cout << endl;
+
+        return prefix;
+    }
+
+    vector<int> postfixProduct(const vector<int>& nums) {
+        int n = nums.size();
+        vector<int> postfix(n, 1);
+        
+        int product = 1;
         for (int i = n - 1; i >= 0; i--) {
-            result[i] = result[i] * postfix;
-            postfix = postfix * nums[i];
+            postfix[i] = product;
+            product *= nums[i];
+        }
+        
+        for(int num : postfix)
+            cout << num << " ";
+        cout << endl;
+
+        return postfix;
+    }
+
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int n = nums.size();
+        
+        vector<int> prefix = prefixProduct(nums);
+        vector<int> postfix = postfixProduct(nums);
+        vector<int> result(n);
+        
+        for (int i = 0; i < n; i++) {
+            result[i] = prefix[i] * postfix[i];
         }
         
         return result;

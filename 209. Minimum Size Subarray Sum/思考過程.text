@@ -1,0 +1,12 @@
+1. 題目解析:最少需要幾個nums中的數字相加才能=target值。
+2. 可能可行的方法:排序後設置一個window，寬度為1，由陣列第一個開始，如果當前總合<target則R++，>target則L++，=target則L++、R++並使sum-=L、sum+=R，
+    同時判斷當前L~R的長度，如果小於當前ans則更新ans，重複直到右界極限後得到的ans就是答案。
+3. 失敗，相加為target的數字不一定相連。
+4. 可能的方法:排序後先將總和設定為nums所有數字相加，由i = 0開始若sum -= nums[i] > target值且sum - nums[i] - target >= nums[i]，
+    則sum -= nums[i]、i++並重複偵測，若sum -= nums[i] > target值但sum - nums[i] - target < nums[i]則i++，若 == target則偵測當前使用的數字數量。
+    若sum -= nums[i] < target則結束迴圈，輸出答案。
+5. 失敗，若數字間格太遠則會造成錯誤(target:15, nums:1,2,3,4,5,5,7,8,9,10)。
+6. 可能的方法:初始化window寬度為1，將window內的數值全部加起來做為sum後，若當前寬度內sum<target則右界持續增加，
+    若>target則抓取相減後>=target且距離右界最近的值，直到窗戶寬度閉合或sum==target，紀錄答案後R++重新判斷。
+7. 失敗，原因:理解錯誤，此題目追求的數值相加>=target是指相連的數值相加後等於target時的最短長度。
+8. 反思:要好好把題目看懂，若一開始就看到subarray的意義是連續長度以及相加大於等於target即可就可以迅速想出sliding window解法並很快解決此題。

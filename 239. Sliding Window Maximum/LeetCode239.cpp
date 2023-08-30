@@ -5,12 +5,25 @@
 
 using namespace std;
 
-// Ex為解答，請自己再寫一次。
-
 class Solution {
 public:
     vector<int> maxSlidingWindow(vector<int>& nums, int k) {
         vector<int> ans;
+        deque<int> records;
+
+        for(int i = 0; i < nums.size(); i++)
+        {
+            while(!records.empty() && nums[i] > nums[records.back()])
+                records.pop_back();
+
+            while(!records.empty() && records.front() < i - k + 1)
+                records.pop_front();
+
+            records.push_back(i);
+
+            if(i - k + 1 >= 0)
+                ans.push_back(nums[records[0]]);
+        }
 
         return ans;
     }

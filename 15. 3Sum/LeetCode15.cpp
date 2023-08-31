@@ -5,49 +5,64 @@
 
 using namespace std;
 
-// 沒寫出來QQQ，因為三個數可以互換，所以其實forward可以設定為必定在index前方，其他思路就沒問題了，有問題的是實作的小細節。
-
 class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
-        unordered_set<int> records;
-
-        sort(nums.begin(), nums.end());
-        
-        int forward = 0, backward = nums.size() - 1;
+        int i = 0, j = nums.size() - 1, k;
 
         vector<vector<int>> ans;
 
-        for(int index = 0; index < nums.size(); index++)
-        {   
-            if(records.find(nums[index]) != records.end())
-                continue;
-                
-            while(forward != backward)
+        sort(nums.begin(), nums.end());
+
+        while(i < nums.size() - 2)
+        {
+            if(nums[i] > 0)
+                break;
+
+            k = i + 1;
+            
+            j = nums.size() - 1;
+
+            int sum = nums[i] + nums[j] + nums[k];
+
+            while(k < j)
             {
-                if(forward == index)
-                    forward++;
+                if(sum > 0)
+                {
+                    j--;
 
-                if(backward == index)
-                    backward--;
+                    while(k < j - 1 && nums[j] == nums[j + 1])
+                        j--;
 
-                if(nums[forward] + nums[backward] > -nums[index])
-                    backward--;
-                else if(nums[forward] + nums[backward] < -nums[index])
-                    forward++;
+                    sum = nums[i] + nums[j] + nums[k];
+                }
+                else if(sum < 0)
+                {
+                    k++;
+
+                    while(k + 1 < j && nums[k] == nums[k - 1])
+                        k++;
+                        
+                    sum = nums[i] + nums[j] + nums[k];
+                }
                 else
                 {
-                    ans.push_back({nums[forward], nums[backward], nums[index]});
-                    forward++;
+                    ans.push_back({nums[i], nums[j], nums[k]});
+                    k++;
+
+                    while(k < j && nums[k] == nums[k - 1])
+                        k++;
+
+                    sum = nums[i] + nums[j] + nums[k];
                 }
             }
 
-            records.insert(nums[index]);
+            i++;
 
-            forward = 0;
-            backward = nums.size() - 1;
+            while(nums[i - 1] == nums[i] && i < nums.size() - 1)
+                i++;
         }
-
+// -5 -5 -4 -4 -4 -2 -2 -2 0 0 0 1 1 3 4 4
         return ans;
     }
 };

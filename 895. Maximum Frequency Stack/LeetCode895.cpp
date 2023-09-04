@@ -8,7 +8,7 @@ using namespace std;
 
 class FreqStack {
 public:
-    stack<pair<int, int>> deck;
+    stack<int> deck;
     unordered_map<int, int> records, judge;
     int Max = 1;
 
@@ -20,18 +20,18 @@ public:
         records[val]++;
         judge[records[val]]++;
         Max = max(records[val], Max);
-        deck.push({val, records[val]});
+        deck.push(val);
     }
     
     int pop() {
-        vector<pair<int, int>> tempRecords;
-        while(deck.top().second != Max)
+        vector<int> tempRecords;
+        while(records[deck.top()] != Max)
         {
-            tempRecords.push_back({deck.top().first, deck.top().second});
+            tempRecords.push_back(deck.top());
             deck.pop();
         }
 
-        int ans = deck.top().first;
+        int ans = deck.top();
         deck.pop();
         records[ans]--;
         judge[Max]--;

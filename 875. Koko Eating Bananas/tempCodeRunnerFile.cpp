@@ -1,0 +1,1 @@
+L = R >= 0 ? piles[R] : piles[0], R = temp >= 0 ? piles[temp] : piles[piles.size() - 1];

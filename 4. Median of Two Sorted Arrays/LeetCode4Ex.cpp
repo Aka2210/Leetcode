@@ -5,6 +5,8 @@
 
 using namespace std;
 
+// 沒寫出來，對於兩個會變動的資料來說，要想辦法固定一個或是使某一個變動後另一個會做出相應的改變，也就是找出兩者的關聯。
+
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {

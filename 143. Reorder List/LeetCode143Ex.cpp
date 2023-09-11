@@ -25,7 +25,7 @@ public:
         ListNode* slow = head;
         ListNode* fast = head;
         
-        while (fast != NULL && fast->next != NULL) {
+        while (fast != NULL && fast->next != NULL) { //找到list的中點，使slow為中點的下一格
             prev = slow;
             slow = slow->next;
             fast = fast->next->next;
@@ -33,10 +33,10 @@ public:
         
         prev->next = NULL;
         
-        ListNode* l1 = head;
-        ListNode* l2 = reverse(slow);
+        ListNode* l1 = head; //設置l1為list中第一格到中點
+        ListNode* l2 = reverse(slow); //設置l2為list中點後一格到末端，並顛倒過來
         
-        merge(l1, l2);
+        merge(l1, l2); //將l1、l2交叉混合。
     }
 private:
     ListNode* reverse(ListNode* head) {

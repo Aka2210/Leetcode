@@ -1,0 +1,1 @@
+應該先遍歷一遍list把每個list的前後位址都記下來存入vector中，最後讓vector.size() - n位置的前後相連。

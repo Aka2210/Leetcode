@@ -1,0 +1,1 @@
+使用一個int val儲存進位，讓兩個point指向相同位數的位址，將val與兩個point的值加起來傳到ans的List裡儲存，最後回傳ans就完成了。

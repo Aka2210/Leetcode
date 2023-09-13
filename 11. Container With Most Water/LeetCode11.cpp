@@ -10,31 +10,19 @@ using namespace std;
 class Solution {
 public:
     int maxArea(vector<int>& height) {
-        int max = 0;
+        int L = 0, R = height.size() - 1, Max = 0;
 
-        for(int i = 0, Pos = height.size() - 1; i < height.size(); i++)
+        while(L < R)
         {
-            if(i >= height.size() / 2)
-                Pos = 0;
+            Max = max((R - L) * min(height[L], height[R]), Max);
+
+            if(height[L] <= height[R])
+                L++;
             else
-                Pos = height.size() - 1;
-
-            while(height[Pos] < height[i] && (Pos >= 0 || Pos < height.size()))
-            {
-                if(i >= height.size() / 2)
-                    Pos++;
-                else
-                    Pos--;
-            }
-
-            if(Pos == -1)
-                continue;
-
-            if(height[i] * abs(Pos - i) > max)
-                max = height[i] * abs(Pos - i);
+                R--;
         }
 
-        return max;
+        return Max;
     }
 };
 

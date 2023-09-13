@@ -12,8 +12,8 @@ public:
         int fast = nums[nums[0]];
         
         while (slow != fast) {
-            slow = nums[slow];
-            fast = nums[nums[fast]];
+            slow = nums[slow];  //移動一步
+            fast = nums[nums[fast]]; //移動兩步
         }
         
         slow = 0;

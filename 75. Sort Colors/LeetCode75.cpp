@@ -5,41 +5,25 @@
 
 using namespace std;
 
-// 寫不出two point的方法所以用另一種O(n)代替。
-
 class Solution {
 public:
     void sortColors(vector<int>& nums) {
-        int zero = 0, one = 0, two = 0;
+        int L = 0, r = nums.size() - 1, l = L;
 
-        for(int i = 0; i < nums.size(); i++)
+        for(; L <= r; L++)
         {
-            if(nums[i] == 0)
-                zero++;
-            else if(nums[i] == 1)
-                one++;
-            else
-                two++;
-        }
+            if(nums[L] == 0)
+            {
+                swap(nums[L], nums[l]);
+                l++;
+            }
 
-        nums.clear();
-
-        while(zero > 0)
-        {
-            nums.push_back(0);
-            zero--;
-        }
-
-        while(one > 0)
-        {
-            nums.push_back(1);
-            one--;
-        }
-
-        while(two > 0)
-        {
-            nums.push_back(2);
-            two--;
+            if(nums[L] == 2)
+            { 
+                swap(nums[L], nums[r]);
+                r--;
+                L--;
+            }
         }
     }
 };

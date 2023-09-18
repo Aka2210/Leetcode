@@ -9,23 +9,24 @@ using namespace std;
 class Solution {
 public:
     int characterReplacement(string s, int k) {
-        int ans = 0, L = 0, R = 0, maxCount = 0;
+        char target = s[0];
+        int L = 0, R = 0, ans = 0;
         unordered_map<char, int> records;
 
-        while(R < s.size())
-        {
+        while(R < s.length())
+        {   
             records[s[R]]++;
 
-            maxCount = max(maxCount, records[s[R]]);
-
-            if(R - L + 1 - maxCount > k)
+            if(records[target] <= records[s[R]])
+                target = s[R];
+            
+            if(k - R + L - 1 + records[target] < 0)
             {
                 records[s[L]]--;
                 L++;
             }
 
             ans = max(ans, R - L + 1);
-
             R++;
         }
 

@@ -1,30 +1,46 @@
 #include<iostream>
 #include<vector>
 #include<unordered_map>
-#include<map>
+#include<unordered_set>
 
 using namespace std;
 
-// multimap的應用，若要使相同的key對應到不同的value則使用這個，且會自動排序(與map、set相同)，此解法為O(nlogn);
-// 因為map、set、multimap都是基於紅黑樹的平衡二叉搜索樹實現的，因此他們的insert()皆為logn。
+//也可用bucket sort搞定。
 
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
-        unordered_map<int, int> record;
-        multimap<int, int, greater<int>> sort;
-        vector<int> ans;
+        unordered_map<int, int> records;
+        unordered_map<int, vector<int>> ans;
+        unordered_set<int> judge;
+        vector<int> result;
+        int Max = 0;
 
-        for(int i = 0; i < nums.size(); i++)
-            record[nums[i]] += 1;
-        
-        for(auto it = record.begin(); it != record.end(); it++)
-            sort.insert({it->second, it->first});
+        for(int num : nums)
+            records[num]++;
 
-        for(auto it = sort.begin(); k > 0; it++, k--)
-            ans.push_back(it->second);
+        for(int num : nums)
+        {
+            if(judge.find(num) == judge.end())
+            {
+                ans[records[num]].push_back(num);
+                Max = max(records[num], Max);
+                judge.insert(num);
+            }
+        }
 
-        return ans;
+        for(int i = Max; k > 0; i--)
+        {
+            if(ans.count(i))
+            {
+                for(int num : ans[i])
+                    result.push_back(num);
+
+                k -= ans[i].size();
+            }
+        }
+
+        return result;
     }
 };
 

@@ -1,24 +1,30 @@
 vector<int> topKFrequent(vector<int>& nums, int k) {
-        unordered_map<int, int> record, result;
-        vector<int> ans;
-        int max = 0;
+        unordered_map<int, int> records;
+        unordered_map<int, vector<int>> ans;
+        vector<int> result;
+        int Max = 0;
 
-        for(int i = 0; i < nums.size(); i++)
+        for(int num : nums)
+            records[num]++;
+
+        for(int num : nums)
         {
-            record[nums[i]] += 1;
-
-            if(record[nums[i]] > max)
-                max = record[i];
+            if(ans.find(records[num]) == ans.end())
+            {
+                ans[records[num]].push_back(num);
+                Max = max(records[num], Max);
+            }
         }
 
-        for(auto it = record.begin(); it != record.end(); it++)
-            result[it->second] = it->first;
-        
-        for(int i = max; k > 0; i--)
+        for(int i = Max; k > 0; i--)
         {
-            if(result[i] != 0)
-                k--;
-                
-            ans.push_back(result[i]);
+            if(ans.count(i))
+            {
+                for(int num : ans[i])
+                    result.push_back(num);
+                k -= ans[i].size();
+            }
         }
+
+        return result;
     }

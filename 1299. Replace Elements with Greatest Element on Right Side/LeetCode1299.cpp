@@ -4,19 +4,19 @@
 
 using namespace std;
 
-// 時間複雜度 O(n^2) 空間複雜度 O(n)
-
 class Solution {
 public:
     vector<int> replaceElements(vector<int>& arr) {
-        vector<int> ans;
+        int Max = -1;
 
-        for(auto it = arr.begin() + 1; it != arr.end(); it++)
-            ans.push_back(*max_element(it, arr.end()));
+        for(int i = arr.size() - 1; i >= 0; i--)
+        {
+            int temp = arr[i];
+            arr[i] = Max;
+            Max = max(Max, temp);
+        }
 
-        ans.push_back(-1);
-
-        return ans;
+        return arr;
     }
 };
 

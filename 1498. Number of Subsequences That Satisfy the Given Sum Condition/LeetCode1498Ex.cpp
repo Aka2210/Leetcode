@@ -7,7 +7,7 @@ using namespace std;
 
 // fastPower主要只是用來計算a^b % mod而已，這邊的概念是指，若數列為2 3 3 4 6 7，當left,right為0,5時，
 // 代表(2,2)為最基礎的一次，然後要不要3、要不要3、要不要4...直到7，意思就是1 * 2 * 2 * 2 * 2 * 2每一次的*2都代表
-// 對應到陣列的那個數取或不取，最後就是總次數了。(乾，誰想得到= =)
+// 對應到陣列的那個數取或不取，最後就是總次數了。(乾，誰想得到= =) //重寫之後我很快就想到了，有進步，但那個fastPower真的很白癡= =。
 
 class Solution {
 public:
@@ -23,7 +23,6 @@ public:
             } 
             else {
                 res = (res + fastPower(2, right - left, mod)) % mod;
-                cout << left << " " << right << " " << fastPower(2, right - left, mod) << endl;
                 left++;
             }
         }

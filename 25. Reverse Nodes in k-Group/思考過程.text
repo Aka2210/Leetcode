@@ -1,0 +1,14 @@
+寫一個linked lists的reserve函式，讓主函式在特定情況下傳入linked list位址進行翻轉。
+Ex方法可讀性較差，但行數、空間複雜度較少。
+Ex:藉由規律性實作，此題規律:執行k次每次都使pre作為最前方的定位，curr作為當前最小值(要換到最後方的位址)。
+
+if (count > 1) 
+{
+    temp = prev->next;
+    prev->next = curr->next;
+    curr->next = curr->next->next;
+    prev->next->next = temp;
+
+    count--;
+}
+每次將curr向後推一格，並且使最新要翻轉的值接到當前已翻轉的第一格，再將curr(應該要在最後面的值)，接到最新值的下一個位址，就可以完成翻轉了。

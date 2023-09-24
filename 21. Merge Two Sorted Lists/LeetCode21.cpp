@@ -65,7 +65,7 @@ int main()
 {
     int val;
     cin >> val;
-
+    ListNode *test = new ListNode();
     ListNode *h1 = new ListNode(val);
     ListNode *current = h1;
 

@@ -52,6 +52,7 @@
         "numeric": "cpp",
         "random": "cpp",
         "set": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "queue": "cpp"
     }
 }

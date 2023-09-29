@@ -1,0 +1,1 @@
+不可能以board中每個字母為開頭，上下左右四種可能皆存入tries中(效率過低)，因此猜測是將words存入，然後在遍歷words中string的開頭char進入tries。

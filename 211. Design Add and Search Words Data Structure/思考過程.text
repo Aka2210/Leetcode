@@ -1,0 +1,1 @@
+在同一高度可能需要進入不同的children，所以直覺肯定是BFS的做法，因此直接include隊列，然後push每一個想要繼續深入探索的node進入queue。

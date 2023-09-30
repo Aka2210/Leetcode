@@ -18,7 +18,7 @@ private:
         int p_pos = l;
         for (int i = l; i < r; ++i){ //從左極到右極判斷數值與pivot的關係
             if (nums[i] <= pivot){ 
-                swap(nums[i], nums[p_pos]);
+                swap(nums[i], nums[p_pos]); //p_pos代表最後一個小於pivot位置的下一個位置，因此此交換是只將第p_pos+1個小於pivot的數字換到p_pos的位置。
                 ++p_pos; //此寫法使p_pos停留在第一個大於pivot的數字的位置
             }
         }

@@ -1,0 +1,22 @@
+資料結構 (Data Structures):
+
+    Arrays (陣列)
+    Hashing (雜湊)
+    Linked List (連結串列)
+    Trees (樹)
+    Tries (字典樹)
+    Heap / Priority Queue (堆積 / 優先隊列)
+    Graphs (圖)
+    Intervals (間隔，雖然它經常被用作資料結構，但在某些情境下也可以視為算法的部分)
+    Advanced Graphs (進階的圖結構)
+
+算法 (Algorithms):
+
+    Two Pointers (雙指標)
+    Binary Search (二元搜尋)
+    Backtracking (回溯法)
+    1-D Dynamic Programming (一維動態規劃)
+    Greedy (貪婪算法)
+    2-D Dynamic Programming (二維動態規劃)
+    Bit Manipulation (位元操作)
+    Math & Geometry (數學 & 幾何)

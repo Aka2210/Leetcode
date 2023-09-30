@@ -1,0 +1,4 @@
+需要空間儲存每個user follow的對象，po文因為是按照時間，所以所有文章應該可以儲存在同一個空間，但要標記文章屬於哪個user。
+
+解析:我的方法效率較低(雖然較容易增加新功能但這只是題目)，重點:如果要1對多(user追蹤很多個人)，可以用map+set結合，
+變成unordered_map<int, unordered_set<int>> followMap;就可以實現1對多了。

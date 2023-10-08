@@ -1,1 +1,1 @@
-如果size%groupsize不等於0(無法整除)，就直接return false，
+如果size%groupsize不等於0(無法整除)，就直接return false，利用map讓vector排序，並且最小值永遠為map.begin()->first，就可以跑i<groupSize迴圈進行判斷了。

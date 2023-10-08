@@ -8,20 +8,30 @@ using namespace std;
 
 class Solution {
 public:
-    bool canJump(vector<int>& nums) {
-        int n = nums.size();
-        int reachable = 0;
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int n = gas.size();
+        
+        int totalGas = 0;
+        int totalCost = 0;
+        for (int i = 0; i < n; i++) {
+            totalGas += gas[i];
+            totalCost += cost[i];
+        }
+        if (totalGas < totalCost) {
+            return -1;
+        }
+        
+        int total = 0;
+        int result = 0;
         
         for (int i = 0; i < n; i++) {
-            if (i > reachable) {
-                return false;
-            }
-            reachable = max(reachable, i + nums[i]);
-            if (reachable >= n - 1) {
-                break;
+            total += gas[i] - cost[i];
+            if (total < 0) {
+                total = 0;
+                result = i + 1;
             }
         }
         
-        return true;
+        return result;
     }
 };

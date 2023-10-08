@@ -1,0 +1,1 @@
+如果size%groupsize不等於0(無法整除)，就直接return false，

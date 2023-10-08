@@ -1,0 +1,2 @@
+由第0格開始向後，選定第一個遇到的一個三格數字皆小於target(x,y,z)的陣列，由他們開始向後merge，如果merge後三格皆小於等於xyz則接受此次merge，
+直到triplets結束，比對三格是否與xyz相同。

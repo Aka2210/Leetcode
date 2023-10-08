@@ -1,1 +1,2 @@
-因為是subArray，所以設一個i當作移動的point，只要讓每次移動後都是0~i的subArray的sum最大值並且偵測當前最大值與MAX誰大並儲存，當i遍歷完nums就可以得到答案。
+因為是subArray，所以設一個i當作移動的point，只要讓每次移動後都是0~i的subArray的sum最大值並且偵測當前最大值與MAX誰大並儲存，
+當i遍歷完nums就可以得到答案。

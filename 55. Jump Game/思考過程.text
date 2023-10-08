@@ -1,0 +1,5 @@
+從第0格開始，計算跳到第1 ~ nums[0]格的哪一格n可以跳得最遠，跳到那格後再重複計算跳到第n+1~n+nums[n]的哪一格可以跳得最遠，
+重複計算直到遇到跳躍格數為0(return false)或遍歷nums(return true)，此方法時間複雜度O(n^2)。
+
+簡化:設一個停止線、一個point i，停止線初始設在nums[i]的位置，代表目前跳躍最遠的位置，i持續增加，若nums[i]+i大於停止線則改變停止線，
+若最後停止線!=nums.size()則return false，否則return true。

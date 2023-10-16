@@ -1,0 +1,3 @@
+因為每個數字都是distinct integers, 因此使用unordered_set儲存出現過的數字，若set中已經有該數字則可以終止此次深入。
+
+Ex方法可以節省空間，較佳。

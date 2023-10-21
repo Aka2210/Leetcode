@@ -19,7 +19,6 @@ class Solution {
 public:
     string kthLargestNumber(vector<string>& nums, int k) {
         priority_queue<string, vector<string>, CompareByLength> pq(nums.begin(), nums.end());
-
         for(k--; k > 0; k--)
             pq.pop();
         

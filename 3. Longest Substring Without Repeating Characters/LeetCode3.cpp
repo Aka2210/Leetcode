@@ -10,6 +10,7 @@ class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
         int L = 0, R = 0, ans = 0;
+        
         unordered_map<char, int> records;
 
         while(R < s.size())

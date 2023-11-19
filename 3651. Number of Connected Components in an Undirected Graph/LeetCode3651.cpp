@@ -16,7 +16,7 @@ public:
 
         for(int i = 0; i < edges.size(); i++)
         {
-            if(Union(edges[i][0], edges[i][1], root, height))
+            if(Union(edges[i][0], edges[i][1], root, height)) //偵測兩點是否連通，若否則n--並將其連通
                 n--;
         }
 
@@ -27,7 +27,7 @@ private:
     int find(int val, int *root)
     {
         if(root[val] != val)
-            root[val] = find(root[val], root);
+            root[val] = find(root[val], root); //查找val的根節點並壓縮
         return root[val];
     }
 
@@ -35,7 +35,7 @@ private:
     {
         a = find(a, root);
         b = find(b, root);
-        
+
         if(a == b)
             return false;
         

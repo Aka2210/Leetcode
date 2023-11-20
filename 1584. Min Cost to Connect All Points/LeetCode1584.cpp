@@ -3,11 +3,11 @@
 #include<vector>
 #include<unordered_map>
 #include<unordered_set>
-#include<string.h>
+#include<queue>
 
 using namespace std;
 
-//Kruskal演算法做最小生成樹
+//Kruskal
 class Solution {
 public:
     int minCostConnectPoints(vector<vector<int>>& points) {

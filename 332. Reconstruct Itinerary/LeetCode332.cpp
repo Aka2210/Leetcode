@@ -12,9 +12,9 @@ public:
     vector<string> findItinerary(vector<vector<string>>& tickets) {
         //儲存Edge A->B可以走的次數
         unordered_map<string, int> g;
-        //儲存所有節點進出次數
+        //儲存總共有哪些節點
         unordered_set<string> records;
-        //儲存所有節點字典序
+        //儲存所有節點，且排序由字典序小到大
         vector<string> StrOrder;
         //Edge的總數
         int n = tickets.size();
@@ -22,7 +22,7 @@ public:
 
         for(int i = 0; i < n; i++)
         {
-            //a、b用來在records內儲存進、出的次數，str用來儲存此邊可走的次數
+            //str用來儲存此邊可走的次數
             string a = tickets[i][0], b = tickets[i][1], str = a + b;
             //如果還沒遇過字串a，推入StrOrder，等等要進行排序
             if(records.find(a) == records.end())

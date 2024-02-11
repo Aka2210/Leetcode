@@ -19,11 +19,6 @@ public:
             {
                 int Find = i - coins[j];
                 if(Find < 0) continue;
-                else if(Find == 0)
-                {
-                    dp[i] = 1;
-                    break;
-                }
                 else if(dp[Find] != -1) dp[i] = min(dp[i], dp[Find] + 1);
             }
 

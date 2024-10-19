@@ -22,7 +22,7 @@ typedef struct {
 
 typedef struct {
     char data[1024];
-    mailbox_t* mailbox;
+    mailbox_t mailbox;
     /*  TODO: 
         Message structure for wrapper
     */

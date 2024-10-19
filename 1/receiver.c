@@ -63,22 +63,22 @@ int main(){
         mailbox_t mailbox;
         mailbox.flag = 1;
         mailbox.storage.msqid = msgget(key, 0666 | IPC_CREAT);
-        str->mailbox = &mailbox;
+        str->mailbox = mailbox;
     }
     else
     {
         // 將共享記憶體段附加到進程的地址空間
         str = (message_t*) shmat(shmid, (void*)0, 0);
     }
-    receive(str, str->mailbox);
+    receive(str, &(str->mailbox));
 
-    if(str->mailbox->flag == 2)
+    if(str->mailbox.flag == 2)
     {
         shmctl(shmid, IPC_RMID, NULL);
     }
     else
     {
-        msgctl(str->mailbox->storage.msqid, IPC_RMID, NULL);
+        msgctl(str->mailbox.storage.msqid, IPC_RMID, NULL);
     }
     return 0;
     /*  TODO: 

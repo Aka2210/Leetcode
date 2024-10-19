@@ -68,8 +68,8 @@ int main(int argc, char *argv[]){
         mailbox.storage.msqid = msqid;
     }
 
-    str->mailbox = &mailbox;
-    send(str, str->mailbox);
+    str->mailbox = mailbox;
+    send(str, &(str->mailbox));
     // 關閉檔案
     fclose(file);
     return 0;

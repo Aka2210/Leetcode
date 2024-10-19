@@ -15,7 +15,7 @@ void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
         if(mailbox_ptr->flag == 1)
         {
             clock_gettime(CLOCK_MONOTONIC, &start);
-            msgrcv(mailbox_ptr->storage.msqid, message_ptr, sizeof(message.mtext), 1, 0);
+            msgrcv(mailbox_ptr->storage.msqid, message_ptr, sizeof(message_t), 1, 0);
             clock_gettime(CLOCK_MONOTONIC, &end);
             time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
         }
@@ -48,7 +48,7 @@ int main(){
         mailbox_t mailbox;
         mailbox.flag = 1;
         mailbox.storage.msqid = msgget(key, 0666 | IPC_CREAT);
-        str->mailbox = mailbox;
+        str->mailbox = &mailbox;
     }
     else
     {

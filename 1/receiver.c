@@ -1,12 +1,16 @@
 #include "receiver.h"
 
 void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
+    printf("test\n");
     sem_t *sem_A = sem_open("/sem_A", 0);  // 只打開，不創建
     sem_t *sem_B = sem_open("/sem_B", 0);
     struct timespec start, end;
     double time_taken = 0;
+    printf("test\n");
     while (1) {
+        printf("test\n");
         sem_wait(sem_B);
+        printf("test\n");
         sem_t *final = sem_open("/final", 0);  // 只打開，不創建
         if(final == SEM_FAILED)
         {
@@ -58,6 +62,7 @@ int main(){
         printf("test\n");
         // 將共享記憶體段附加到進程的地址空間
         str = (message_t*) shmat(shmid, (void*)0, 0);
+        printf("test\n");
     }
     receive(str, str->mailbox);
     shmctl(shmid, IPC_RMID, NULL);

@@ -12,7 +12,20 @@ void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
         {
             break;
         }
-        printf("test\n");
+
+        if(mailbox_ptr == NULL)
+        {
+            printf("error1");
+        }
+        
+        if(mailbox_ptr->flag != NULL)
+        {
+            printf("%d", mailbox_ptr->flag);
+        }
+        else
+        {
+            printf("error2");
+        }
         if(mailbox_ptr->flag == 1)
         {
             clock_gettime(CLOCK_MONOTONIC, &start);

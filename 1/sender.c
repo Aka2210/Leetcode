@@ -9,7 +9,9 @@ void send(message_t* message, mailbox_t* mailbox_ptr)
     struct timespec start, end;
     double time_taken = 0;
     while (1) {
+        printf("test");
         sem_wait(sem_A);//10
+        printf("test");
         clock_gettime(CLOCK_MONOTONIC, &start);
         //00
         if(fgets(message->data, sizeof(message->data), file) == NULL)
@@ -49,6 +51,7 @@ int main(int argc, char *argv[]){
     message_t *str = NULL;
     if(mailbox.flag == 2)
     {
+        printf("test");
         // 創建唯一 key
         key_t key = ftok("shmfile", 65);
 
@@ -58,6 +61,7 @@ int main(int argc, char *argv[]){
         // 將共享記憶體段附加到進程的地址空間
         str = (message_t*) shmat(shmid, (void*)0, 0);
         mailbox.storage.shm_addr = str;
+        printf("test");
     }
     else
     {
@@ -67,7 +71,7 @@ int main(int argc, char *argv[]){
         str = (message_t *)malloc(sizeof(message_t));
         mailbox.storage.msqid = msqid;
     }
-
+    printf("test");
     str->mailbox = &mailbox;
     send(str, str->mailbox);
     // 關閉檔案

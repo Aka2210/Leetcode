@@ -12,6 +12,13 @@ void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
         {
             break;
         }
+        if(mailbox_ptr->flag == 1)
+        {
+            clock_gettime(CLOCK_MONOTONIC, &start);
+            msgrcv(mailbox_ptr->storage.msqid, message_ptr, sizeof(message.mtext), 1, 0);
+            clock_gettime(CLOCK_MONOTONIC, &end);
+            time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
+        }
         clock_gettime(CLOCK_MONOTONIC, &start);
         printf("%s", message_ptr->data);  // 打印讀取到的每一行
         clock_gettime(CLOCK_MONOTONIC, &end);
@@ -32,10 +39,22 @@ int main(){
     key_t key = ftok("shmfile", 65);
 
     // 創建共享記憶體段，大小為 1024 bytes
-    int shmid = shmget(key, sizeof(message_t), 0666 | IPC_CREAT);
-
-    // 將共享記憶體段附加到進程的地址空間
-    message_t *str = (message_t*) shmat(shmid, (void*)0, 0);
+    int shmid = shmget(key, sizeof(message_t), 0666);
+    message_t *str;
+    if(shmid == -1)
+    {
+        key = ftok("progfile", 65);
+        str = (message_t *)malloc(sizeof(message_t));
+        mailbox_t mailbox;
+        mailbox.flag = 1;
+        mailbox.storage.msqid = msgget(key, 0666 | IPC_CREAT);
+        str->mailbox = mailbox;
+    }
+    else
+    {
+        // 將共享記憶體段附加到進程的地址空間
+        str = (message_t*) shmat(shmid, (void*)0, 0);
+    }
     receive(str, str->mailbox);
     shmctl(shmid, IPC_RMID, NULL);
     return 0;

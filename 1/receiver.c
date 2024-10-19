@@ -13,23 +13,10 @@ void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
             break;
         }
 
-        if(mailbox_ptr == NULL)
-        {
-            printf("error1");
-        }
-
-        if(mailbox_ptr->flag != NULL)
-        {
-            printf("%d", mailbox_ptr->flag);
-        }
-        else
-        {
-            printf("error2");
-        }
         if(mailbox_ptr->flag == 1)
         {
             clock_gettime(CLOCK_MONOTONIC, &start);
-            msgrcv(mailbox_ptr->storage.msqid, message_ptr, sizeof(message_t), 1, 0);
+            msgrcv(mailbox_ptr->storage.msqid, message_ptr, sizeof(message_t), 0, 0);
             clock_gettime(CLOCK_MONOTONIC, &end);
             time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
         }
@@ -55,6 +42,7 @@ int main(){
     // 創建共享記憶體段，大小為 1024 bytes
     int shmid = shmget(key, sizeof(message_t), 0666);
     message_t *str;
+    printf("???");
     if(shmid == -1)
     {
         printf("???");

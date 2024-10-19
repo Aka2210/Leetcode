@@ -3,44 +3,37 @@
 FILE *file;
 void send(message_t* message, mailbox_t* mailbox_ptr)
 {
-    if(mailbox_ptr->flag == 2)
-    {
-        sem_t *sem_A = sem_open("/sem_A", O_CREAT, 0666, 1);  // A 起始信號量設為 1，讓 A 先執行
-        sem_t *sem_B = sem_open("/sem_B", O_CREAT, 0666, 0);  // B 初始設為 0，等待 A 給信號
-        sem_t *final_A = sem_open("/final", O_CREAT, 0666, 0);
-        struct timespec start, end;
-        double time_taken = 0;
-        while (1) {
-            sem_wait(sem_A);//10
+    sem_t *sem_A = sem_open("/sem_A", O_CREAT, 0666, 1);  // A 起始信號量設為 1，讓 A 先執行
+    sem_t *sem_B = sem_open("/sem_B", O_CREAT, 0666, 0);  // B 初始設為 0，等待 A 給信號
+    sem_t *final_A = sem_open("/final", O_CREAT, 0666, 0);
+    struct timespec start, end;
+    double time_taken = 0;
+    while (1) {
+        sem_wait(sem_A);//10
+        clock_gettime(CLOCK_MONOTONIC, &start);
+        //00
+        if(fgets(message->data, sizeof(message->data), file) == NULL)
+        {
+            break;
+        }
+        else
+        {
+            printf("%s", message->data);  // 打印讀取到的每一行
+        }
+        clock_gettime(CLOCK_MONOTONIC, &end);
+        time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
+        if(mailbox_ptr->flag == 1)
+        {
             clock_gettime(CLOCK_MONOTONIC, &start);
-            //00
-            if(fgets(message->data, sizeof(message->data), file) == NULL)
-            {
-                break;
-            }
-            else
-            {
-                printf("%s", message->data);  // 打印讀取到的每一行
-            }
+            msgsnd(mailbox_ptr->storage.msqid, message, sizeof(message_t), 0);
             clock_gettime(CLOCK_MONOTONIC, &end);
             time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
-            if(mailbox_ptr->flag == 1)
-            {
-                clock_gettime(CLOCK_MONOTONIC, &start);
-                msgsnd(mailbox_ptr->storage.msqid, message, sizeof(message_t), 0);
-                clock_gettime(CLOCK_MONOTONIC, &end);
-                time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
-            }
-            sem_post(sem_B);//01
         }
-        printf("\n%lf\n", time_taken);
-        sem_unlink("/final");
-        sem_post(sem_B);
+        sem_post(sem_B);//01
     }
-    else
-    {
-
-    }
+    printf("\n%lf\n", time_taken);
+    sem_unlink("/final");
+    sem_post(sem_B);
 }
 
 int main(int argc, char *argv[]){

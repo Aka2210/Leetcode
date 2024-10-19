@@ -65,7 +65,15 @@ int main(){
         printf("test\n");
     }
     receive(str, str->mailbox);
-    shmctl(shmid, IPC_RMID, NULL);
+
+    if(str->mailbox->flag == 2)
+    {
+        shmctl(shmid, IPC_RMID, NULL);
+    }
+    else
+    {
+        msgctl(str->mailbox->storage.msqid, IPC_RMID, NULL);
+    }
     return 0;
     /*  TODO: 
         1) Call receive(&message, &mailbox) according to the flow in slide 4

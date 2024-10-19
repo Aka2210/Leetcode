@@ -27,7 +27,7 @@ void send(message_t* message, mailbox_t* mailbox_ptr)
             if(mailbox_ptr->flag == 1)
             {
                 clock_gettime(CLOCK_MONOTONIC, &start);
-                msgsnd(msqid, message, sizeof(message_t), 0);
+                msgsnd(mailbox_ptr->storage.msqid, message, sizeof(message_t), 0);
                 clock_gettime(CLOCK_MONOTONIC, &end);
                 time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
             }

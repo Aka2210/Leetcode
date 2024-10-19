@@ -28,4 +28,4 @@ typedef struct {
     */
 } message_t;
 
-void send(message_t* message, mailbox_t* mailbox_ptr);
+void send(message_t message, mailbox_t* mailbox_ptr);

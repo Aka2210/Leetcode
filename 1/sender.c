@@ -3,7 +3,7 @@
 FILE *file;
 struct timespec start, end;
 double time_taken = 0;
-void send(message_t* message, mailbox_t* mailbox_ptr)
+void send(message_t message, mailbox_t* mailbox_ptr)
 {
     sem_t *sem_A = sem_open("/sem_A", O_CREAT, 0666, 1);  // A 起始信號量設為 1，讓 A 先執行
     sem_t *sem_B = sem_open("/sem_B", O_CREAT, 0666, 0);  // B 初始設為 0，等待 A 給信號
@@ -12,13 +12,21 @@ void send(message_t* message, mailbox_t* mailbox_ptr)
     while (1) {
         sem_wait(sem_A);//10
         //00
-        if(fgets(message->data, sizeof(message->data), file) == NULL)
+        if(mailbox_ptr->flag == 2)
+        {
+            clock_gettime(CLOCK_MONOTONIC, &start);
+            message = (message_t) shmat(shmid, (void*)0, 0);
+            clock_gettime(CLOCK_MONOTONIC, &end);
+            time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
+        }
+
+        if(fgets(message.data, sizeof(message.data), file) == NULL)
         {
             break;
         }
         else
         {
-            printf("%s", message->data);  // 打印讀取到的每一行
+            printf("%s", message.data);  // 打印讀取到的每一行
         }
         if(mailbox_ptr->flag == 1)
         {
@@ -44,7 +52,7 @@ int main(int argc, char *argv[]){
 
     file = fopen(filename, "r");
 
-    message_t *str = NULL;
+    message_t str;
     if(mailbox.flag == 2)
     {
         // 創建唯一 key
@@ -52,12 +60,9 @@ int main(int argc, char *argv[]){
 
         // 創建共享記憶體段，大小為 1024 bytes
         clock_gettime(CLOCK_MONOTONIC, &start);
-        int shmid = shmget(key, sizeof(message_t), 0666 | IPC_CREAT);
-        // 將共享記憶體段附加到進程的地址空間
-        str = (message_t*) shmat(shmid, (void*)0, 0);
+        mailbox.storage.msqid = shmget(key, sizeof(message_t), 0666 | IPC_CREAT);
         clock_gettime(CLOCK_MONOTONIC, &end);
         time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
-        mailbox.storage.shm_addr = str;
     }
     else
     {
@@ -66,13 +71,11 @@ int main(int argc, char *argv[]){
         int msqid = msgget(key, 0666 | IPC_CREAT);  // 創建或獲取消息隊列
         clock_gettime(CLOCK_MONOTONIC, &end);
         time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
-        
-        str = (message_t *)malloc(sizeof(message_t));
         mailbox.storage.msqid = msqid;
     }
 
-    str->mailbox = mailbox;
-    send(str, &(str->mailbox));
+    str.mailbox = mailbox;
+    send(str, &(str.mailbox));
     // 關閉檔案
     fclose(file);
     return 0;

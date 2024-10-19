@@ -20,6 +20,7 @@ void send(message_t* message, mailbox_t* mailbox_ptr)
     }
     sem_unlink(sem_A);
     sem_post(sem_B);
+    sem_close(sem_B);
 }
 
 int main(int argc, char *argv[]){

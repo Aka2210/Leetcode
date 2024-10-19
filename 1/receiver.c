@@ -10,11 +10,6 @@ void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
         {
             break;
         }
-        sem_t *sem_B = sem_open("/sem_B", 0);
-        if(sem_B == SEM_FAILED)
-        {
-            break;
-        }
         printf("%s", message_ptr->data);  // 打印讀取到的每一行
         sem_post(sem_A);
     }

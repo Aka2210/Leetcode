@@ -17,7 +17,7 @@ void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
         {
             printf("error1");
         }
-        
+
         if(mailbox_ptr->flag != NULL)
         {
             printf("%d", mailbox_ptr->flag);
@@ -57,6 +57,7 @@ int main(){
     message_t *str;
     if(shmid == -1)
     {
+        printf("???");
         key = ftok("progfile", 65);
         str = (message_t *)malloc(sizeof(message_t));
         mailbox_t mailbox;

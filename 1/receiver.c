@@ -3,23 +3,22 @@
 void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
     sem_t *sem_A = sem_open("/sem_A", 0);  // 只打開，不創建
     sem_t *sem_B = sem_open("/sem_B", 0);
-    while (true) {
+    while (1) {
         sem_wait(sem_B);
         sem_t *sem_A = sem_open("/sem_A", 0);  // 只打開，不創建
         if(sem_A == SEM_FAILED)
         {
-            sem_post(sem_A);
             break;
         }
         sem_t *sem_B = sem_open("/sem_B", 0);
         if(sem_B == SEM_FAILED)
         {
-            sem_post(sem_A);
             break;
         }
         printf("%s", message_ptr->data);  // 打印讀取到的每一行
         sem_post(sem_A);
     }
+    sem_unlink(sem_B);
     /*  TODO: 
         1. Use flag to determine the communication method
         2. According to the communication method, receive the message

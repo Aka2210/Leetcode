@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "sender.h"
 
 FILE *file;
 void send(message_t* message, mailbox_t* mailbox_ptr)
@@ -10,7 +10,6 @@ void send(message_t* message, mailbox_t* mailbox_ptr)
         //00
         if(fgets(message->data, sizeof(message->data), file) == NULL)
         {
-            sem_post(sem_B);
             break;
         }
         else
@@ -19,9 +18,8 @@ void send(message_t* message, mailbox_t* mailbox_ptr)
         }
         sem_post(sem_B);//01
     }
-    sem_wait(sem_A);
     sem_unlink(sem_A);
-    sem_unlink(sem_B);
+    sem_post(sem_B);
 }
 
 int main(int argc, char *argv[]){

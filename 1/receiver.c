@@ -3,17 +3,24 @@
 void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
     sem_t *sem_A = sem_open("/sem_A", 0);  // 只打開，不創建
     sem_t *sem_B = sem_open("/sem_B", 0);
+    struct timespec start, end;
+    double time_taken = 0;
     while (1) {
         sem_wait(sem_B);
-        sem_t *sem_A = sem_open("/sem_A", 0);  // 只打開，不創建
-        if(sem_A == SEM_FAILED)
+        sem_t *final = sem_open("/final", 0);  // 只打開，不創建
+        if(final == SEM_FAILED)
         {
             break;
         }
+        clock_gettime(CLOCK_MONOTONIC, &start);
         printf("%s", message_ptr->data);  // 打印讀取到的每一行
+        clock_gettime(CLOCK_MONOTONIC, &end);
+        time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
         sem_post(sem_A);
     }
-    sem_unlink(sem_B);
+    printf("\n%lf\n", time_taken);
+    sem_unlink("/sem_A");
+    sem_unlink("/sem_B");
     /*  TODO: 
         1. Use flag to determine the communication method
         2. According to the communication method, receive the message
@@ -30,6 +37,7 @@ int main(){
     // 將共享記憶體段附加到進程的地址空間
     message_t *str = (message_t*) shmat(shmid, (void*)0, 0);
     receive(str, str->mailbox);
+    shmctl(shmid, IPC_RMID, NULL);
     return 0;
     /*  TODO: 
         1) Call receive(&message, &mailbox) according to the flow in slide 4

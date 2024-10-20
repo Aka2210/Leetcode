@@ -33,7 +33,7 @@ void send(message_t message, mailbox_t* mailbox_ptr)
             message_t* str = ((message_t*) shmat(mailbox_ptr->storage.msqid, (void*)0, 0));
             clock_gettime(CLOCK_MONOTONIC, &end);
             time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
-            strcpy(str->data, &message.data);
+            strcpy(str->data, message.data);
         }
         sem_post(sem_B);//01
     }

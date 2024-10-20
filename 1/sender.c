@@ -8,7 +8,7 @@ void send(message_t message, mailbox_t* mailbox_ptr)
     sem_t *sem_A = sem_open("/sem_A", O_CREAT, 0666, 1);  // A 起始信號量設為 1，讓 A 先執行
     sem_t *sem_B = sem_open("/sem_B", O_CREAT, 0666, 0);  // B 初始設為 0，等待 A 給信號
     sem_t *final_A = sem_open("/final", O_CREAT, 0666, 0);
-    message_t* str;
+    message_t* str = (message_t*)malloc(sizeof(message_t));
     if(mailbox_ptr->flag == 2)
     {
         clock_gettime(CLOCK_MONOTONIC, &start);

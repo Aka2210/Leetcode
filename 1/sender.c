@@ -27,17 +27,14 @@ void send(message_t message, mailbox_t* mailbox_ptr)
         {
             printf("%s", message.data);  // 打印讀取到的每一行
         }
+        strcpy(str->data, message.data);
         if(mailbox_ptr->flag == 1)
         {
             message.mtype = 1;
             clock_gettime(CLOCK_MONOTONIC, &start);
-            msgsnd(mailbox_ptr->storage.msqid, &message, sizeof(message_t), 0);
+            msgsnd(mailbox_ptr->storage.msqid, str, sizeof(message_t), 0);
             clock_gettime(CLOCK_MONOTONIC, &end);
             time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
-        }
-        else
-        {
-            strcpy(str->data, message.data);
         }
         sem_post(sem_B);//01
     }

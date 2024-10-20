@@ -57,25 +57,21 @@ int main(int argc, char *argv[]){
     file = fopen(filename, "r");
 
     message_t str;
-    if(mailbox.flag == 2)
+    if(mailbox.flag == 1)
     {
-        // 創建唯一 key
-        key_t key = ftok("shmfile", 65);
-
-        // 創建共享記憶體段，大小為 1024 bytes
+        key_t key = ftok("progfile", 66);
         clock_gettime(CLOCK_MONOTONIC, &start);
-        mailbox.storage.msqid = shmget(key, sizeof(message_t), 0666 | IPC_CREAT);
+        mailbox.storage.msqid = msgget(key, 0666 | IPC_CREAT);
         clock_gettime(CLOCK_MONOTONIC, &end);
         time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
     }
     else
     {
-        key_t key = ftok("progfile", 66);  // 生成唯一鍵值
+        key_t key = ftok("shmfile", 65);
         clock_gettime(CLOCK_MONOTONIC, &start);
-        int msqid = msgget(key, 0666 | IPC_CREAT);  // 創建或獲取消息隊列
+        mailbox.storage.msqid = shmget(key, sizeof(message_t), 0666 | IPC_CREAT);
         clock_gettime(CLOCK_MONOTONIC, &end);
         time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
-        mailbox.storage.msqid = msqid;
     }
 
     str.mailbox = mailbox;

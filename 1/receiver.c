@@ -22,6 +22,7 @@ void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
             msgrcv(mailbox_ptr->storage.msqid, message_ptr, sizeof(message_t), 0, 0);
             printf("test4\n");
             clock_gettime(CLOCK_MONOTONIC, &end);
+            mailbox_ptr = &(message_ptr->mailbox);
             time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
         }
         printf("test5\n");

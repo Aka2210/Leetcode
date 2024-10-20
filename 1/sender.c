@@ -70,7 +70,7 @@ int main(int argc, char *argv[]){
     }
     else
     {
-        key_t key = ftok("progfile", 65);  // 生成唯一鍵值
+        key_t key = ftok("progfile", 66);  // 生成唯一鍵值
         clock_gettime(CLOCK_MONOTONIC, &start);
         int msqid = msgget(key, 0666 | IPC_CREAT);  // 創建或獲取消息隊列
         clock_gettime(CLOCK_MONOTONIC, &end);

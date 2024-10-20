@@ -44,7 +44,7 @@ int main(){
     if(shmid == -1)
     {
         time_taken = 0;
-        key = ftok("progfile", 65);
+        key = ftok("progfile", 66);
         str = (message_t *)malloc(sizeof(message_t));
         mailbox_t mailbox;
         mailbox.flag = 1;

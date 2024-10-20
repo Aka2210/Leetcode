@@ -80,6 +80,7 @@ int main(){
     if(str->mailbox.flag == 2)
     {
         clock_gettime(CLOCK_MONOTONIC, &start);
+        shmdt(str);
         shmctl(shmid, IPC_RMID, NULL);
         clock_gettime(CLOCK_MONOTONIC, &end);
         time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;

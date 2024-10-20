@@ -55,6 +55,10 @@ void send(message_t message, mailbox_t* mailbox_ptr)
     printf("\n%lf\n", time_taken);
     sem_unlink("/final");
     sem_post(sem_B);
+    if(mailbox_ptr->flag == 2)
+    {
+        shmdt(str);
+    }
 }
 
 int main(int argc, char *argv[]){

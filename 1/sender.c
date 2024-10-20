@@ -9,11 +9,7 @@ void send(message_t message, mailbox_t* mailbox_ptr)
     sem_t *sem_B = sem_open("/sem_B", O_CREAT, 0666, 0);  // B 初始設為 0，等待 A 給信號
     sem_t *final_A = sem_open("/final", O_CREAT, 0666, 0);
     message_t* str;
-    if(mailbox_ptr->flag == 1)
-    {
-        str = (message_t*)malloc(sizeof(message_t));
-    }
-    else
+    if(mailbox_ptr->flag == 2)
     {
         clock_gettime(CLOCK_MONOTONIC, &start);
         str = (message_t*) shmat(mailbox_ptr->storage.msqid, (void*)0, 0);
@@ -21,26 +17,41 @@ void send(message_t message, mailbox_t* mailbox_ptr)
         time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
     }
     while (1) {
+        printf("test1\n");
         sem_wait(sem_A);//10
+        printf("test2\n");
         //00
         if(fgets(message.data, sizeof(message.data), file) == NULL)
         {
+            printf("test3\n");
             break;
         }
         else
         {
+            printf("test4\n");
             printf("%s", message.data);  // 打印讀取到的每一行
+            printf("test5\n");
         }
-        strcpy(str->data, message.data);
+        
         if(mailbox_ptr->flag == 1)
         {
+            printf("test6\n");
             clock_gettime(CLOCK_MONOTONIC, &start);
-            msgsnd(mailbox_ptr->storage.msqid, str, sizeof(message_t), 0);
+            msgsnd(mailbox_ptr->storage.msqid, &message, sizeof(message_t), 0);
+            printf("test7\n");
             clock_gettime(CLOCK_MONOTONIC, &end);
             time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
         }
+        else
+        {
+            printf("test8\n");
+            strcpy(str->data, message.data);
+            printf("test9\n");
+        }
         sem_post(sem_B);//01
+        printf("test10\n");
     }
+    printf("test11\n");
     printf("\n%lf\n", time_taken);
     sem_unlink("/final");
     sem_post(sem_B);

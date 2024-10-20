@@ -6,24 +6,32 @@ void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
     sem_t *sem_A = sem_open("/sem_A", 0);  // 只打開，不創建
     sem_t *sem_B = sem_open("/sem_B", 0);
     while (1) {
+        printf("test1\n");
         sem_wait(sem_B);
         sem_t *final = sem_open("/final", 0);  // 只打開，不創建
         if(final == SEM_FAILED)
         {
+            printf("test2\n");
             break;
         }
 
         if(mailbox_ptr->flag == 1)
         {
+            printf("test3\n");
             clock_gettime(CLOCK_MONOTONIC, &start);
             msgrcv(mailbox_ptr->storage.msqid, message_ptr, sizeof(message_t), 0, 0);
+            printf("test4\n");
             clock_gettime(CLOCK_MONOTONIC, &end);
             time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
         }
+        printf("test5\n");
         printf("%s", message_ptr->data);  // 打印讀取到的每一行
+        printf("test6\n");
         sem_post(sem_A);
     }
+    printf("test7\n");
     printf("\n%lf\n", time_taken);
+    printf("test8\n");
     sem_unlink("/sem_A");
     sem_unlink("/sem_B");
     /*  TODO: 

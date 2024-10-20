@@ -21,7 +21,6 @@ typedef struct {
 } mailbox_t;
 
 typedef struct {
-    long mtype;
     char data[1024];
     mailbox_t mailbox;
     /*  TODO: 

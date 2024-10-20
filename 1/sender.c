@@ -60,7 +60,7 @@ int main(int argc, char *argv[]){
 
         // 創建共享記憶體段，大小為 1024 bytes
         clock_gettime(CLOCK_MONOTONIC, &start);
-        mailbox.storage.msqid = shmget(key, sizeof(message_t*), 0666 | IPC_CREAT);
+        mailbox.storage.msqid = shmget(key, sizeof(message_t), 0666 | IPC_CREAT);
         clock_gettime(CLOCK_MONOTONIC, &end);
         time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
     }

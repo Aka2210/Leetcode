@@ -34,7 +34,6 @@ void send(message_t message, mailbox_t* mailbox_ptr)
         strcpy(str->data, message.data);
         if(mailbox_ptr->flag == 1)
         {
-            message.mtype = 1;
             clock_gettime(CLOCK_MONOTONIC, &start);
             msgsnd(mailbox_ptr->storage.msqid, str, sizeof(message_t), 0);
             clock_gettime(CLOCK_MONOTONIC, &end);

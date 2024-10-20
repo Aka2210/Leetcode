@@ -20,7 +20,7 @@ void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
             mailbox_ptr = &(message_ptr->mailbox);
             time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
         }
-        printf("Receiving message   %s", message_ptr->data);  // 打印讀取到的每一行
+        printf("Receiving message:   %s", message_ptr->data);  // 打印讀取到的每一行
         sem_post(sem_A);
     }
     printf("\nSender exit!\n");

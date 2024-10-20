@@ -68,6 +68,7 @@ int main(){
     }
     else
     {
+        mailbox.flag = 2;
         // 將共享記憶體段附加到進程的地址空間
         clock_gettime(CLOCK_MONOTONIC, &start);
         str = (message_t*) shmat(shmid, (void*)0, 0);

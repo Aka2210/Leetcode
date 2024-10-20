@@ -15,6 +15,7 @@ void send(message_t message, mailbox_t* mailbox_ptr)
         str = (message_t*) shmat(mailbox_ptr->storage.msqid, (void*)0, 0);
         clock_gettime(CLOCK_MONOTONIC, &end);
         time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
+        str->mailbox = *(mailbox_ptr);
     }
     while (1) {
         printf("test1\n");

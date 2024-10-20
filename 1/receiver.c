@@ -77,19 +77,19 @@ int main(){
     }
     printf("main flag3: %d", str->mailbox.flag);
     receive(str, &(str->mailbox));
-
-    if(str->mailbox.flag == 2)
+    printf("main flag4: %d", str->mailbox.flag);
+    if(str->mailbox.flag == 1)
     {
         clock_gettime(CLOCK_MONOTONIC, &start);
-        shmdt(str);
-        shmctl(shmid, IPC_RMID, NULL);
+        msgctl(str->mailbox.storage.msqid, IPC_RMID, NULL);
         clock_gettime(CLOCK_MONOTONIC, &end);
         time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
     }
     else
     {
         clock_gettime(CLOCK_MONOTONIC, &start);
-        msgctl(str->mailbox.storage.msqid, IPC_RMID, NULL);
+        shmdt(str);
+        shmctl(shmid, IPC_RMID, NULL);
         clock_gettime(CLOCK_MONOTONIC, &end);
         time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
     }

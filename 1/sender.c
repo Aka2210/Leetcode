@@ -18,42 +18,32 @@ void send(message_t message, mailbox_t* mailbox_ptr)
         str->mailbox = *(mailbox_ptr);
     }
     while (1) {
-        printf("test1\n");
         sem_wait(sem_A);//10
-        printf("test2\n");
         //00
         if(fgets(message.data, sizeof(message.data), file) == NULL)
         {
-            printf("test3\n");
             break;
         }
         else
         {
-            printf("test4\n");
-            printf("%s", message.data);  // 打印讀取到的每一行
-            printf("test5\n");
+            printf("Sending message:    %s", message.data);  // 打印讀取到的每一行
         }
         
         if(mailbox_ptr->flag == 1)
         {
-            printf("test6\n");
             clock_gettime(CLOCK_MONOTONIC, &start);
             msgsnd(mailbox_ptr->storage.msqid, &message, sizeof(message_t), 0);
-            printf("test7\n");
             clock_gettime(CLOCK_MONOTONIC, &end);
             time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
         }
         else
         {
-            printf("test8\n");
             strcpy(str->data, message.data);
-            printf("test9\n");
         }
         sem_post(sem_B);//01
-        printf("test10\n");
     }
-    printf("test11\n");
-    printf("\n%lf\n", time_taken);
+    printf("\nEnd of input file! exit!\n");
+    printf("Total time taken in receiving msg:    %lf s\n", time_taken);
     sem_unlink("/final");
     if(mailbox_ptr->flag == 2)
     {
@@ -75,6 +65,7 @@ int main(int argc, char *argv[]){
     message_t str;
     if(mailbox.flag == 1)
     {
+        printf("Message Passing\n");
         key_t key = ftok("progfile", 66);
         clock_gettime(CLOCK_MONOTONIC, &start);
         mailbox.storage.msqid = msgget(key, 0666 | IPC_CREAT);
@@ -83,6 +74,7 @@ int main(int argc, char *argv[]){
     }
     else
     {
+        printf("Share Memory\n");
         key_t key = ftok("shmfile", 65);
         clock_gettime(CLOCK_MONOTONIC, &start);
         mailbox.storage.msqid = shmget(key, sizeof(message_t), 0666 | IPC_CREAT);

@@ -5,35 +5,26 @@ struct timespec start, end;
 void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
     sem_t *sem_A = sem_open("/sem_A", 0);  // 只打開，不創建
     sem_t *sem_B = sem_open("/sem_B", 0);
-    printf("flag1: %d\n", mailbox_ptr->flag);
     while (1) {
-        printf("test1\n");
         sem_wait(sem_B);
         sem_t *final = sem_open("/final", 0);  // 只打開，不創建
         if(final == SEM_FAILED)
         {
-            printf("test2\n");
             break;
         }
-        printf("flag2: %d\n", mailbox_ptr->flag);
         if(mailbox_ptr->flag == 1)
         {
-            printf("test3\n");
             clock_gettime(CLOCK_MONOTONIC, &start);
             msgrcv(mailbox_ptr->storage.msqid, message_ptr, sizeof(message_t), 0, 0);
-            printf("test4\n");
             clock_gettime(CLOCK_MONOTONIC, &end);
             mailbox_ptr = &(message_ptr->mailbox);
             time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
         }
-        printf("test5\n");
-        printf("%s", message_ptr->data);  // 打印讀取到的每一行
-        printf("test6\n");
+        printf("Receiving message   %s", message_ptr->data);  // 打印讀取到的每一行
         sem_post(sem_A);
     }
-    printf("test7\n");
-    printf("\n%lf\n", time_taken);
-    printf("test8\n");
+    printf("\nSender exit!\n");
+    printf("Total time taken in receiving msg:    %lf s\n", time_taken);
     sem_unlink("/sem_A");
     sem_unlink("/sem_B");
     /*  TODO: 
@@ -62,9 +53,7 @@ int main(){
         mailbox.storage.msqid = msgget(key, 0666 | IPC_CREAT);
         clock_gettime(CLOCK_MONOTONIC, &end);
         time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
-        printf("main flag1: %d", str->mailbox.flag);
         str->mailbox = mailbox;
-        printf("main flag2: %d", str->mailbox.flag);
     }
     else
     {
@@ -75,9 +64,7 @@ int main(){
         clock_gettime(CLOCK_MONOTONIC, &end);
         time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
     }
-    printf("main flag3: %d", str->mailbox.flag);
     receive(str, &(str->mailbox));
-    printf("main flag4: %d", str->mailbox.flag);
     if(str->mailbox.flag == 1)
     {
         clock_gettime(CLOCK_MONOTONIC, &start);

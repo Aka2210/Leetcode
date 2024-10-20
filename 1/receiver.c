@@ -14,7 +14,7 @@ void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
             printf("test2\n");
             break;
         }
-
+        printf("flag: %d\n", mailbox_ptr->flag);
         if(mailbox_ptr->flag == 1)
         {
             printf("test3\n");

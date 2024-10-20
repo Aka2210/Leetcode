@@ -5,6 +5,7 @@ struct timespec start, end;
 void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
     sem_t *sem_A = sem_open("/sem_A", 0);  // 只打開，不創建
     sem_t *sem_B = sem_open("/sem_B", 0);
+    printf("flag1: %d\n", mailbox_ptr->flag);
     while (1) {
         printf("test1\n");
         sem_wait(sem_B);
@@ -14,7 +15,7 @@ void receive(message_t* message_ptr, mailbox_t* mailbox_ptr){
             printf("test2\n");
             break;
         }
-        printf("flag: %d\n", mailbox_ptr->flag);
+        printf("flag2: %d\n", mailbox_ptr->flag);
         if(mailbox_ptr->flag == 1)
         {
             printf("test3\n");
@@ -50,18 +51,20 @@ int main(){
     clock_gettime(CLOCK_MONOTONIC, &end);
     time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
     message_t *str;
+    mailbox_t mailbox;
     if(shmid == -1)
     {
         time_taken = 0;
         key = ftok("progfile", 66);
         str = (message_t *)malloc(sizeof(message_t));
-        mailbox_t mailbox;
         mailbox.flag = 1;
         clock_gettime(CLOCK_MONOTONIC, &start);
         mailbox.storage.msqid = msgget(key, 0666 | IPC_CREAT);
         clock_gettime(CLOCK_MONOTONIC, &end);
         time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
+        printf("main flag1: %d", str->mailbox.flag);
         str->mailbox = mailbox;
+        printf("main flag2: %d", str->mailbox.flag);
     }
     else
     {
@@ -71,6 +74,7 @@ int main(){
         clock_gettime(CLOCK_MONOTONIC, &end);
         time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
     }
+    printf("main flag3: %d", str->mailbox.flag);
     receive(str, &(str->mailbox));
 
     if(str->mailbox.flag == 2)

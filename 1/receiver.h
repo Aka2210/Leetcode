@@ -22,6 +22,7 @@ typedef struct {
 
 
 typedef struct {
+    long mtype;
     char data[1024];
     mailbox_t mailbox;
     /*  TODO: 

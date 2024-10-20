@@ -12,14 +12,6 @@ void send(message_t message, mailbox_t* mailbox_ptr)
     while (1) {
         sem_wait(sem_A);//10
         //00
-        if(mailbox_ptr->flag == 2)
-        {
-            clock_gettime(CLOCK_MONOTONIC, &start);
-            message = *((message_t*) shmat(mailbox_ptr->storage.msqid, (void*)0, 0));
-            clock_gettime(CLOCK_MONOTONIC, &end);
-            time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
-        }
-
         if(fgets(message.data, sizeof(message.data), file) == NULL)
         {
             break;
@@ -34,6 +26,14 @@ void send(message_t message, mailbox_t* mailbox_ptr)
             msgsnd(mailbox_ptr->storage.msqid, &message, sizeof(message_t), 0);
             clock_gettime(CLOCK_MONOTONIC, &end);
             time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
+        }
+        else
+        {
+            clock_gettime(CLOCK_MONOTONIC, &start);
+            message_t* str = ((message_t*) shmat(mailbox_ptr->storage.msqid, (void*)0, 0));
+            clock_gettime(CLOCK_MONOTONIC, &end);
+            time_taken += (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) * 1e-9;
+            strcpy(str->data, &message.data);
         }
         sem_post(sem_B);//01
     }

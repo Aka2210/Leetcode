@@ -43,7 +43,7 @@ void send(message_t message, mailbox_t* mailbox_ptr)
         sem_post(sem_B);//01
     }
     printf("\nEnd of input file! exit!\n");
-    printf("Total time taken in receiving msg:    %lf s\n", time_taken);
+    printf("Total time taken in sending msg:    %lf s\n", time_taken);
     sem_unlink("/final");
     if(mailbox_ptr->flag == 2)
     {

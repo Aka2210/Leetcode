@@ -66,7 +66,7 @@ int spawn_proc(struct cmd_node *p)
 	if(pid < 0)
 	{
 		perror("fork failed");
-		return 1;
+		exit(-1);
 	}
 	else if(pid == 0)
 	{

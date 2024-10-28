@@ -34,7 +34,7 @@ void redirection(struct cmd_node *p){
 	
 	if(p->args[p->length - 2] == '<')
 	{
-		int file = open(p->in_file, O_WRONLY);
+		int file = open(p->in_file, O_WRONLY | O_CREAT | O_TRUNC);
 		if(file < 0)
 		{
 			perror("file open failed");
@@ -68,6 +68,7 @@ int spawn_proc(struct cmd_node *p)
 	}
 	else if(pid == 0)
 	{
+		redirection(p);
 		execvp(p->args[0], p->args);
 		_exit(0);
 	}

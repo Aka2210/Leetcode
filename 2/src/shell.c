@@ -105,6 +105,7 @@ int fork_cmd_node(struct cmd *cmd)
 	int pipe_prv = 0;
 	while(cmd->head != NULL)
 	{
+	        //printf("org: %d, %d\n", cmd->head->in, cmd->head->out);
 		int pipe_fd[2] = {-1, -1};
 		if(cmd->head->next != NULL)
 		{
@@ -116,6 +117,7 @@ int fork_cmd_node(struct cmd *cmd)
 			cmd->head->out = 1;
 		}
 		cmd->head->in = pipe_prv;
+		//printf("new: %d, %d\n", cmd->head->in, cmd->head->out);
 		spawn_proc(cmd->head);
 		if(pipe_prv != STDIN_FILENO)
 		{

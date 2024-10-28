@@ -20,8 +20,7 @@
  * 
  */
 void redirection(struct cmd_node *p){
-	printf("test");
-	if(p->args[2] == '<')
+	if(p->args[2] == "<")
 	{
 		int file = open(p->in_file, O_RDONLY);
 		if(file < 0)
@@ -33,7 +32,7 @@ void redirection(struct cmd_node *p){
 		close(file);
 	}
 	
-	if(p->args[p->length - 2] == '>')
+	if(p->args[p->length - 2] == ">")
 	{
 		int file = open(p->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if(file < 0)
@@ -60,7 +59,6 @@ void redirection(struct cmd_node *p){
  */
 int spawn_proc(struct cmd_node *p)
 {
-	redirection(p);
 	int status;
 	pid_t pid = fork();
 	if(pid < 0)

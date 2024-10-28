@@ -20,7 +20,7 @@
  * 
  */
 void redirection(struct cmd_node *p){
-	if(p->args[2] == "<")
+	if(p->in_file != NULL)
 	{
 		int file = open(p->in_file, O_RDONLY);
 		if(file < 0)
@@ -32,7 +32,7 @@ void redirection(struct cmd_node *p){
 		close(file);
 	}
 	
-	if(p->args[p->length - 2] == ">")
+	if(p->out_file != NULL)
 	{
 		int file = open(p->out_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if(file < 0)

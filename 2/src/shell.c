@@ -109,6 +109,8 @@ int fork_cmd_node(struct cmd *cmd)
 		{
 			close(pipe_prv[0]);
 			close(pipe_prv[1]);
+			free(pipe_prv);
+            pipe_prv = NULL;
 		}
 
 		if(cmd->head->next != NULL)
@@ -117,14 +119,14 @@ int fork_cmd_node(struct cmd *cmd)
 			pipe(pipe_fd);
 			cmd->head->out = pipe_fd[1];
 			cmd->head->next->in = pipe_fd[0];
-			pipe_prv = pipe_fd[0];
-			pipe_prv = pipe_fd[1];
+			pipe_prv = pipe_fd;
 		}
 		spawn_proc(cmd->head);
 		cmd->head = cmd->head->next;
 	}
 	close(pipe_prv[0]);
 	close(pipe_prv[1]);
+	free(pipe_prv);
 	return 1;
 }
 // ===============================================================

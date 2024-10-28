@@ -46,7 +46,7 @@ int spawn_proc(struct cmd_node *p)
 	}
 	else if(pid == 0)
 	{
-		execvp(p->args[1], p->args);
+		execvp(p->args[0], p->args);
 		_exit(0);
 	}
 	else

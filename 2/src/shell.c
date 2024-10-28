@@ -105,7 +105,7 @@ int fork_cmd_node(struct cmd *cmd)
 	int pipe_prv = 0;
 	while(cmd->head != NULL)
 	{
-		int pipe_fd[2];
+		int *pipe_fd = NULL;
 		if(cmd->head->next != NULL)
 		{
 			pipe(pipe_fd);
@@ -115,7 +115,7 @@ int fork_cmd_node(struct cmd *cmd)
 		spawn_proc(cmd->head);
 		if(pipe_prv != STDIN_FILENO)
 		{
-			close(pipe_prv);
+		//	close(pipe_prv);
 		}
 
 		if(pipe_fd != NULL)

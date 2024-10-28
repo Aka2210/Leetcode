@@ -105,7 +105,7 @@ int fork_cmd_node(struct cmd *cmd)
 	int pipe_prv = 0;
 	while(cmd->head != NULL)
 	{
-		int *pipe_fd = NULL;
+		int pipe_fd[2];
 		if(cmd->head->next != NULL)
 		{
 			pipe(pipe_fd);
@@ -113,20 +113,10 @@ int fork_cmd_node(struct cmd *cmd)
 		}
 		cmd->head->in = pipe_prv;
 		spawn_proc(cmd->head);
-		if(pipe_prv != STDIN_FILENO)
-		{
-		//	close(pipe_prv);
-		}
-
-		if(pipe_fd != NULL)
-		{ 
-			pipe_prv = pipe_fd[0];
-			close(pipe_fd[1]);
-		}
+		pipe_prv = pipe_fd[0];
+		close(pipe_fd[1]);
 		cmd->head = cmd->head->next;
 	}
-	
-	close(pipe_prv);
 	return 1;
 }
 // ===============================================================

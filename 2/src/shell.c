@@ -43,6 +43,16 @@ void redirection(struct cmd_node *p){
 		dup2(file, p->out);
 		close(file);
 	}
+
+	if(p->in != STDIN_FILENO)
+	{
+		dup2(p->in, STDIN_FILENO);
+	}
+
+	if(p->out != STDOUT_FILENO)
+	{
+		dup2(p->out, STDOUT_FILENO);
+	}
 }
 // ===============================================================
 
@@ -92,6 +102,29 @@ int spawn_proc(struct cmd_node *p)
  */
 int fork_cmd_node(struct cmd *cmd)
 {
+	int *pipe_prv = NULL;
+	while(cmd->head != NULL)
+	{
+		if(pipe_prv != NULL)
+		{
+			close(pipe_prv[0]);
+			close(pipe_prv[1]);
+		}
+
+		if(cmd->head->next != NULL)
+		{
+			int pipe_fd[2];
+			pipe(pipe_fd);
+			cmd->head->out = pipe_fd[1];
+			cmd->head->next->in = pipe_fd[0];
+			pipe_prv = pipe_fd[0];
+			pipe_prv = pipe_fd[1];
+		}
+		spawn_proc(cmd->head);
+		cmd->head = cmd->head->next;
+	}
+	close(pipe_prv[0]);
+	close(pipe_prv[1]);
 	return 1;
 }
 // ===============================================================

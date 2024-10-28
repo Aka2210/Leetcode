@@ -20,7 +20,29 @@
  * 
  */
 void redirection(struct cmd_node *p){
+	if(p->args[2] == '>')
+	{
+		int file = open(p->out_file, O_RDONLY);
+		if(file < 0)
+		{
+			perror("file open failed");
+			_exit(-1);
+		}
+		dup2(file, p->out);
+		close(file);
+	}
 	
+	if(p->args[p->length - 2] == '<')
+	{
+		int file = open(p->in_file, O_WRONLY);
+		if(file < 0)
+		{
+			perror("file open failed");
+			_exit(-1);
+		}
+		dup2(file, p->in);
+		close(file);
+	}
 }
 // ===============================================================
 

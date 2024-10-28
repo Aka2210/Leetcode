@@ -111,6 +111,10 @@ int fork_cmd_node(struct cmd *cmd)
 			pipe(pipe_fd);
 			cmd->head->out = pipe_fd[1];
 		}
+		else
+		{
+			cmd->head->out = 1;
+		}
 		cmd->head->in = pipe_prv;
 		spawn_proc(cmd->head);
 		pipe_prv = pipe_fd[0];

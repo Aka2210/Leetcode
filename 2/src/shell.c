@@ -124,9 +124,13 @@ int fork_cmd_node(struct cmd *cmd)
 		spawn_proc(cmd->head);
 		cmd->head = cmd->head->next;
 	}
-	close(pipe_prv[0]);
-	close(pipe_prv[1]);
-	free(pipe_prv);
+
+	if(pipe_prv != NULL)
+	{
+		close(pipe_prv[0]);
+		close(pipe_prv[1]);
+		free(pipe_prv);
+	}	
 	return 1;
 }
 // ===============================================================

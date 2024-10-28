@@ -37,6 +37,22 @@ void redirection(struct cmd_node *p){
  */
 int spawn_proc(struct cmd_node *p)
 {
+	int status;
+	pid_t pid = fork();
+	if(pid < 0)
+	{
+		perror("fork failed");
+		return 1;
+	}
+	else if(pid == 0)
+	{
+		execvp(p->args[1], p->args);
+		_exit(0);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+	}
   	return 1;
 }
 // ===============================================================

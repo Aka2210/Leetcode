@@ -118,13 +118,8 @@ int fork_cmd_node(struct cmd *cmd)
 		close(pipe_fd[1]);
 		cmd->head = cmd->head->next;
 	}
-
-	if(pipe_prv != NULL)
-	{
-		close(pipe_prv[0]);
-		close(pipe_prv[1]);
-		free(pipe_prv);
-	}	
+	
+	close(pipe_prv);
 	return 1;
 }
 // ===============================================================
